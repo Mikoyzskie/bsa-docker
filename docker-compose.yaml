@@ -3,9 +3,36 @@ version: "3.9"
 services:
   api:
     # Add configuration here
-
+    image: "mikoy123/bsa-docker-backend"
+    ports:
+      - "4001:4001"
+    environment:
+      HTTP_PORT: 4001
+      POSTGRES_PORT: 5432
+      POSTGRES_HOST: database
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DATABASE: postgres
+    depends_on:
+      - database
   web:
     # Add configuration here
+    image: "mikoy123/bsa-docker-frontend"
+    ports:
+      - "8080:80"
 
   database:
     # Add configuration here
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      HTTP_PORT: 4001
+
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DATABASE: postgres
+volumes:
+  postgres_data:
